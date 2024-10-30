@@ -1,11 +1,18 @@
 <template>
-  <div class="flex flex-wrap w-full min-h-screen justify-center items-center">
+  <div
+    style="
+      background: url('bg.jpg');
+      background-position: bottom;
+      background-size: cover;
+    "
+    class="flex flex-wrap w-full min-h-screen justify-center items-center"
+  >
     <!-- CARD FORM  -->
     <div
-      class="md:w-4/12 xl:w-3/12 py-10 bg-white border rounded-2xl shadow-md px-10"
+      class="md:w-4/12 xl:w-3/12 py-10 bg-white bg-opacity-70 border rounded-2xl shadow-lg px-10 backdrop-blur-sm"
     >
       <!-- Title -->
-      <div class="mb-10">
+      <div class="mb-5">
         <h1 class="text-center font-bold text-2xl">Login</h1>
       </div>
       <!-- end title -->
@@ -67,7 +74,7 @@
       <!-- BTN SUBMIT  -->
       <div class="mb-2">
         <button
-          class="py-1 px-5 bg-emerald-600 rounded-full text-white hover:text-slate-400 shadow-md hover:bg-emerald-800 active:ring-2 ring-green-400"
+          class="w-full py-1 px-5 bg-emerald-600 rounded-full text-white hover:text-slate-400 shadow-md hover:bg-emerald-800 active:ring-2 ring-green-400"
           @click="login()"
         >
           SUBMIT
@@ -80,6 +87,9 @@
 </template>
 
 <script>
+import axios from "axios";
+import router from "@/router";
+
 export default {
   data() {
     return {
@@ -91,8 +101,26 @@ export default {
   },
   methods: {
     login() {
-      console.log(this.email);
-      console.log(this.password);
+      axios({
+        method: "post",
+        url: "http://localhost:8000/api/login/auth",
+        data: {
+          email: this.email,
+          password: this.password,
+        },
+      })
+        .then(function (response) {
+          console.log(response);
+          localStorage.setItem("email", response.data.data.email);
+          localStorage.setItem("name", response.data.data.name);
+          localStorage.setItem("role_id", response.data.data.role_id);
+          localStorage.setItem("token", response.data.data.token);
+          router.push({ name: "home" });
+        })
+        .catch(function (error) {
+          console.log(error);
+          console.log("Erorr email or password");
+        });
     },
     showpw() {
       this.notShowPassword = false;
