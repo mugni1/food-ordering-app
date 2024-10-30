@@ -97,6 +97,7 @@ export default {
       password: null,
       notShowPassword: true,
       emailValidate: null,
+      token: "",
     };
   },
   methods: {
@@ -115,6 +116,7 @@ export default {
           localStorage.setItem("name", response.data.data.name);
           localStorage.setItem("role_id", response.data.data.role_id);
           localStorage.setItem("token", response.data.data.token);
+          // after login push to home
           router.push({ name: "home" });
         })
         .catch(function (error) {
@@ -138,6 +140,11 @@ export default {
         this.emailValidate = "notValid";
       }
     },
+  },
+  mounted() {
+    if (localStorage.getItem("token") != null) {
+      router.push({ name: "home" });
+    }
   },
 };
 </script>

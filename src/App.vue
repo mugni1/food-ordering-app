@@ -15,10 +15,10 @@
       class="w-4/12 flex gap-5 font-semibold text-xl text-white justify-center"
     >
       <router-link to="/">Home</router-link>
-      <router-link to="/login">Login</router-link>
     </nav>
-    <div class="w-4/12 flex font-semibold text-xl text-white justify-end">
-      <h1>Hi Manager</h1>
+    <div class="w-4/12 flex font-semibold text-xl text-white justify-end gap-5">
+      <h1>Hi {{ name }}</h1>
+      <button @click="logout()">Logout</button>
     </div>
   </header>
   <!-- HEADER -->
@@ -27,5 +27,37 @@
 </template>
 
 <script>
-export default {};
+import router from "@/router";
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      name: localStorage.getItem("name"),
+    };
+  },
+  methods: {
+    logout() {
+      axios({
+        method: "get",
+        url: "http://localhost:8000/api/logout",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then(function (response) {
+          console.log(response);
+          localStorage.removeItem("email");
+          localStorage.removeItem("name");
+          localStorage.removeItem("role_id");
+          localStorage.removeItem("token");
+          router.push({ name: "login" });
+        })
+        .catch(function (error) {
+          console.log(error);
+          console.log("Erorr email or password");
+        });
+    },
+  },
+};
 </script>
