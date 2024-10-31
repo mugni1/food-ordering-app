@@ -9,6 +9,7 @@
 
 <script>
 import Navbar from "@/components/Navbar.vue";
+import router from "@/router";
 
 export default {
   components: {
@@ -18,6 +19,14 @@ export default {
     return {
       name: localStorage.getItem("name"),
     };
+  },
+  mounted() {
+    if (
+      localStorage.getItem("token") == null ||
+      localStorage.getItem("token") == ""
+    ) {
+      router.push({ name: "login" });
+    }
   },
 };
 </script>

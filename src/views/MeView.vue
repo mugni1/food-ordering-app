@@ -17,6 +17,7 @@
 <script>
 import CardProfile from "@/components/CardProfile.vue";
 import Navbar from "@/components/Navbar.vue";
+import router from "@/router";
 
 export default {
   components: {
@@ -29,6 +30,11 @@ export default {
       email: localStorage.getItem("email"),
       status: localStorage.getItem("status"),
     };
+  },
+  mounted() {
+    if (localStorage.getItem("token") == null) {
+      router.push({ name: "login" });
+    }
   },
 };
 </script>
