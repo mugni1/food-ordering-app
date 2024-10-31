@@ -97,7 +97,7 @@ export default {
       password: null,
       notShowPassword: true,
       emailValidate: null,
-      token: "",
+      token: null,
     };
   },
   methods: {
