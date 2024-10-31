@@ -17,9 +17,7 @@
 <script>
 import CardProfile from "@/components/CardProfile.vue";
 import Navbar from "@/components/Navbar.vue";
-import axios from "axios";
 
-axios;
 export default {
   components: {
     Navbar,
