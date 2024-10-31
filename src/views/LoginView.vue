@@ -5,11 +5,11 @@
       background-position: bottom;
       background-size: cover;
     "
-    class="flex flex-wrap w-full min-h-screen justify-center items-center"
+    class="relative z-0 flex flex-wrap w-full min-h-screen justify-center items-center"
   >
     <!-- CARD FORM  -->
     <div
-      class="md:w-4/12 xl:w-3/12 py-10 bg-white bg-opacity-70 border rounded-2xl shadow-lg px-10 backdrop-blur-sm"
+      class="absolute z-20 md:w-4/12 xl:w-3/12 py-10 bg-white bg-opacity-70 border rounded-2xl shadow-lg px-10 backdrop-blur-sm"
     >
       <!-- Title -->
       <div class="mb-5">

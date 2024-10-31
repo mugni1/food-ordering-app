@@ -1,16 +1,27 @@
 <template>
-  <div>
+  <!-- NAVBAR -->
+  <Navbar :name="name" />
+  <!-- END NAVBAR -->
+
+  <!-- CONTENT -->
+  <section class="pt-20">
     <h1>Home</h1>
-  </div>
+  </section>
+  <!-- END CONTENT  -->
 </template>
 
 <script>
+import Navbar from "@/components/Navbar.vue";
 import router from "@/router";
 
 export default {
+  components: {
+    Navbar,
+  },
   data() {
     return {
       token: null,
+      name: localStorage.getItem("name"),
     };
   },
   mounted() {
