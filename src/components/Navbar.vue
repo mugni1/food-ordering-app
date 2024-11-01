@@ -2,13 +2,13 @@
   <!-- HEADER -->
   <header
     v-if="$route['name'] != 'login'"
-    class="flex flex-wrap bg-emerald-600 h-20 items-center px-5 fixed w-full"
+    class="flex flex-wrap bg-emerald-600 h-20 items-center px-5 fixed z-50 w-full"
   >
     <div class="w-4/12 font-bold text-xl">
       <a
         href=""
         class="text-emerald-600 py-2 px-5 rounded-lg bg-white shadow-lg"
-        >BURGER BANGOR</a
+        >RESTO GO</a
       >
     </div>
     <nav
@@ -20,18 +20,15 @@
         >Home</router-link
       >
       <router-link
-        to="/me"
-        class="py-2 px-5 rounded-lg hover:bg-emerald-700 active:ring-2 ring-blue-600 active:bg-sky-500 active:text-slate-700"
-        >Profile</router-link
-      >
-      <router-link
         to="/order"
         class="py-2 px-5 rounded-lg hover:bg-emerald-700 active:ring-2 ring-blue-600 active:bg-sky-500 active:text-slate-700"
         >Order</router-link
       >
     </nav>
     <div class="w-4/12 flex font-semibold text-xl text-white justify-end gap-5">
-      <h1 class="py-2 px-5 rounded-lg hover:bg-emerald-700">Hi {{ name }}</h1>
+      <router-link to="/me" class="py-2 px-5 rounded-lg hover:bg-emerald-700"
+        >Hi {{ name }}</router-link
+      >
       <button
         @click="logout()"
         class="py-2 px-5 rounded-lg hover:bg-emerald-700 active:ring-2 ring-blue-600 active:bg-sky-500 active:text-slate-700"
