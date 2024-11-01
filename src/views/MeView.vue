@@ -1,6 +1,6 @@
 <template>
   <!-- NAVBAR  -->
-  <Navbar :name="name" />
+  <Navbar :name="name" :role_id="role_id" />
   <!-- END NAVBAR  -->
 
   <!-- CONTENT  -->
@@ -29,6 +29,7 @@ export default {
       name: localStorage.getItem("name"),
       email: localStorage.getItem("email"),
       status: localStorage.getItem("status"),
+      role_id: localStorage.getItem("role_id"),
     };
   },
   mounted() {

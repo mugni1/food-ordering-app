@@ -1,6 +1,6 @@
 <template>
   <!-- NAVBAR  -->
-  <Navbar :name="name" />
+  <Navbar :name="name" :role_id="role_id" />
   <!-- END NAVBAR  -->
   <section class="pt-20 w-full flex flex-wrap">
     <!-- col1 -->
@@ -61,19 +61,28 @@ export default {
   data() {
     return {
       name: localStorage.getItem("name"),
+      role_id: localStorage.getItem("role_id"),
       items: [],
-      keyword: "",
       filterItem: [],
+      keyword: "",
     };
   },
   mounted() {
+    //jika tidak ada token tendang ke halaman login
     if (
       localStorage.getItem("token") == null ||
       localStorage.getItem("token") == ""
     ) {
       router.push({ name: "login" });
     }
+
+    // get all items
     this.getItems();
+
+    // middleware
+    if (this.role_id != 1 && this.role_id != 4) {
+      router.push({ name: "home" });
+    }
   },
   methods: {
     getItems() {
