@@ -28,7 +28,7 @@
         <td class="border text-center">
           <router-link :to="'/produk/' + item.id + '/update'">Edit</router-link>
         </td>
-        <td class="border text-center">Delete</td>
+        <td class="border text-center"><button>Delete</button></td>
       </tr>
     </table>
   </section>
