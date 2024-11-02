@@ -5,7 +5,8 @@
 
   <section class="py-20 flex flex-wrap w-full">
     <!-- FORM  -->
-    <div
+    <form
+      @submit.prevent="addProduk()"
       class="container mx-auto w-full md:w-1/2 border py-5 px-5 mt-5 rounded-lg shadow-md flex flex-wrap"
     >
       <!-- title  -->
@@ -18,6 +19,7 @@
           id="name"
           class="py-1 px-2 border w-full rounded-lg outline-none"
           placeholder="Ayam Bakar"
+          v-model="nameProduk"
         />
       </div>
       <!-- price  -->
@@ -28,6 +30,7 @@
           id="price"
           class="py-1 px-2 border w-full rounded-lg outline-none"
           placeholder="20000"
+          v-model="priceProduk"
         />
       </div>
       <!-- image  -->
@@ -37,17 +40,19 @@
           type="file"
           id="image"
           class="py-2 px-2 border w-full rounded-lg outline-none"
+          @change="imageChange($event)"
         />
       </div>
       <!-- Btn  -->
       <div class="w-full flex flex-wrap mb-2 mt-10">
         <button
+          type="submit"
           class="py-2 px-5 bg-emerald-600 rounded-full font-semibold text-white shadow-md hover:scale-105 hover:shadow-lg transition-all active:scale-100 active:bg-emerald-800 active:ring-2 ring-sky-500 ease-in-out"
         >
           Submit
         </button>
       </div>
-    </div>
+    </form>
     <!-- END FORM  -->
   </section>
 </template>
@@ -55,6 +60,7 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import router from "@/router";
+import axios from "axios";
 
 export default {
   components: {
@@ -64,6 +70,9 @@ export default {
     return {
       name: localStorage.getItem("name"),
       role_id: localStorage.getItem("role_id"),
+      nameProduk: "",
+      priceProduk: "",
+      imageProduk: null,
     };
   },
   mounted() {
@@ -74,6 +83,40 @@ export default {
       if (this.role_id != 4) {
         return router.push({ name: "home" });
       }
+    },
+    addProduk() {
+      // validasi nama dan price
+      if (this.nameProduk == "" || this.nameProduk == null) {
+        return alert("Harap isi nama produk");
+      }
+      if (this.priceProduk == "" || this.priceProduk == null) {
+        return alert("Harap isi price produk");
+      }
+
+      // kirim
+      axios({
+        method: "post",
+        url: "http://localhost:8000/api/create_item",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "multipart/form-data",
+        },
+        data: {
+          name: this.nameProduk,
+          price: this.priceProduk,
+          image: this.imageProduk,
+        },
+      })
+        .then(function (response) {
+          console.log(response);
+          router.push({ name: "produk" });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    imageChange(e) {
+      this.imageProduk = e.target.files[0];
     },
   },
 };
