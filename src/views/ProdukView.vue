@@ -20,15 +20,20 @@
         <td class="border text-center">{{ index + 1 }}</td>
         <td class="border text-center flex justify-center py-3">
           <div
-            :class="`bg-[url(${url}${item.image})] bg-cover bg-center bg-repeat h-20 w-36`"
+            :style="{ backgroundImage: `url(${url}${item.image})` }"
+            class="bg-cover bg-center bg-repeat h-20 w-36"
           ></div>
         </td>
-        <td class="border ps-2">{{ item.name }}</td>
+        <td class="border ps-2">
+          {{ item.name }}
+        </td>
         <td class="border text-center">Rp.{{ item.price }}</td>
         <td class="border text-center">
           <router-link :to="'/produk/' + item.id + '/update'">Edit</router-link>
         </td>
-        <td class="border text-center"><button>Delete</button></td>
+        <td class="border text-center">
+          <button @click="drop(item.id)">delte</button>
+        </td>
       </tr>
     </table>
   </section>
@@ -75,6 +80,28 @@ export default {
           console.log(error);
           console.log("Error fetch data");
         });
+    },
+    drop(id) {
+      let isConfirm = confirm("Apakah anda yakin ingin menghapus?");
+      if (isConfirm == true) {
+        axios({
+          method: "delete",
+          url: `http://localhost:8000/api/item/${id}/delete`,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+          .then((response) => {
+            console.log(response.data.data);
+            alert("berhasil menghapus");
+            window.location.reload();
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      } else {
+        alert("Penghapusan di batalkan");
+      }
     },
   },
 };

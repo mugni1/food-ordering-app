@@ -30,7 +30,8 @@
           >
             <div class="h-40 mb-5 w-full overflow-hidden">
               <div
-                :class="`bg-[url('http://localhost/food-order-api/public/storage/img/${item.image}')] bg-cover bg-center bg-repeat w-full h-full group-hover:rotate-6 group-hover:scale-125 transition-all`"
+                :style="`background-image: url(${url}${item.image});`"
+                class="bg-[url('http://localhost/food-order-api/public/storage/img/${item.image}')] bg-cover bg-center bg-repeat w-full h-full group-hover:rotate-6 group-hover:scale-125 transition-all"
               ></div>
             </div>
             <h1>{{ item.name }}</h1>
@@ -65,6 +66,7 @@ export default {
       items: [],
       filterItem: [],
       keyword: "",
+      url: "http://localhost/food-order-api/public/storage/img/",
     };
   },
   mounted() {
