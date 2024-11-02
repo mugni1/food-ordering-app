@@ -1,6 +1,13 @@
 <template>
   <Navbar :name="name" :role_id="role_id" />
   <section class="py-20 p-5 flex flex-wrap w-full">
+    <div class="w-full md:w-8/12 mx-auto mt-5">
+      <button
+        class="py-2 px-5 bg-emerald-600 rounded-full font-semibold text-white shadow-md hover:scale-105 hover:shadow-lg transition-all active:scale-100 active:bg-emerald-800 active:ring-2 ring-sky-500 ease-in-out"
+      >
+        <router-link to="/produk-add">Add New Produk</router-link>
+      </button>
+    </div>
     <table class="w-full md:w-8/12 mx-auto mt-5">
       <tr>
         <th class="border bg-slate-400">No</th>
@@ -18,7 +25,9 @@
         </td>
         <td class="border ps-2">{{ item.name }}</td>
         <td class="border text-center">Rp.{{ item.price }}</td>
-        <td class="border text-center">Edit</td>
+        <td class="border text-center">
+          <router-link :to="'/produk/' + item.id + '/update'">Edit</router-link>
+        </td>
         <td class="border text-center">Delete</td>
       </tr>
     </table>
