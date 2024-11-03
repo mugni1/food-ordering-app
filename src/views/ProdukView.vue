@@ -83,11 +83,7 @@ export default {
         .catch(function (error) {
           let errorstatus = error.response.status;
           if (errorstatus == 401) {
-            localStorage.removeItem("token");
-            localStorage.removeItem("name");
-            localStorage.removeItem("email");
-            localStorage.removeItem("role_id");
-            localStorage.removeItem("status");
+            localStorage.clear();
             router.push({ name: "login" });
           }
           console.log(error);
