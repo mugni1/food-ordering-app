@@ -61,7 +61,7 @@
       <!-- title  -->
       <h1 class="text-xl font-bold text-slate-800 border-b mb-3">List Order</h1>
       <!-- end title  -->
-      <div v-if="total == null" class="w-full">
+      <div v-if="total == null || total == ''" class="w-full">
         Belum ada Order
       </div>
       <!-- order  -->
@@ -79,20 +79,22 @@
           <div class="flex gap-3">
             <button
               class="border px-2 rounded-md text-sm"
-              @click="minesitem(index)"
-            >
-              -
-            </button>
-            <button
-              class="border px-2 rounded-md text-sm"
               @click="plusItem(index)"
             >
               +
             </button>
             <button
+              @click="deleteItem(index)"
               class="border px-2 rounded-md text-sm text-white bg-red-500"
             >
               delete
+            </button>
+            <button
+              v-if="item.qty > 1"
+              class="border px-2 rounded-md text-sm"
+              @click="minesItem(index)"
+            >
+              -
             </button>
           </div>
         </div>
@@ -101,7 +103,7 @@
       <!-- end order  -->
       <!-- total  -->
       <div
-        v-if="total != null"
+        v-if="total != null && total != ''"
         class="flex flex-wrap w-full justify-between mt-2 border-t"
       >
         <span class="font-semibold">Total</span>
@@ -198,6 +200,31 @@ export default {
         this.orders.push(produk);
       }
 
+      this.total = this.orders.reduce(
+        (acc, item) => acc + item.price * item.qty,
+        0
+      );
+    },
+    plusItem(index) {
+      let produk = this.orders[index];
+      produk.qty++;
+      produk.pricechart = produk.price * produk.qty;
+      this.total = this.orders.reduce(
+        (acc, item) => acc + item.price * item.qty,
+        0
+      );
+    },
+    minesItem(index) {
+      let produk = this.orders[index];
+      produk.qty--;
+      produk.pricechart = produk.price * produk.qty;
+      this.total = this.orders.reduce(
+        (acc, item) => acc + item.price * item.qty,
+        0
+      );
+    },
+    deleteItem(index) {
+      this.orders.splice(index, 1);
       this.total = this.orders.reduce(
         (acc, item) => acc + item.price * item.qty,
         0
