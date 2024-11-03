@@ -19,7 +19,7 @@
       </div>
       <!-- end SEARCH  -->
       <!-- LIST PRODUK -->
-      <div class="w-full flex flex-wrap">
+      <div class="w-full flex flex-wrap justify-start items-start">
         <!-- card produk -->
         <div
           v-for="(item, index) in filterItem"
@@ -44,9 +44,20 @@
             <h1>Rp. {{ item.price }}</h1>
             <button
               @click="addToOrder(index)"
-              class="py-2 px-5 bg-emerald-600 rounded-full font-semibold text-white shadow-md hover:scale-105 hover:shadow-lg transition-all active:scale-100 active:bg-emerald-800 active:ring-2 ring-sky-500 ease-in-out mt-3"
+              class="flex justify-center mx-auto gap-2 py-2 px-5 bg-emerald-600 rounded-full font-semibold text-white shadow-md hover:scale-105 hover:shadow-lg transition-all active:scale-100 active:bg-emerald-800 active:ring-2 ring-sky-500 ease-in-out mt-3"
             >
               Order
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                class="fill-current"
+              >
+                <path
+                  d="m5.705 3.71-1.41-1.42C1 5.563 1 7.935 1 11h1l1-.063C3 8.009 3 6.396 5.705 3.71zm13.999-1.42-1.408 1.42C21 6.396 21 8.009 21 11l2-.063c0-3.002 0-5.374-3.296-8.647zM12 22a2.98 2.98 0 0 0 2.818-2H9.182A2.98 2.98 0 0 0 12 22zm7-7.414V10c0-3.217-2.185-5.927-5.145-6.742C13.562 2.52 12.846 2 12 2s-1.562.52-1.855 1.258C7.184 4.073 5 6.783 5 10v4.586l-1.707 1.707A.996.996 0 0 0 3 17v1a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-1a.996.996 0 0 0-.293-.707L19 14.586z"
+                ></path>
+              </svg>
             </button>
           </div>
         </div>
@@ -59,12 +70,37 @@
     <!-- COL 2 -->
     <div class="w-full md:w-4/12 border p-5">
       <!-- title  -->
-      <h1 class="text-xl font-bold text-slate-800 border-b mb-3">List Order</h1>
+      <h1 class="text-lg font-bold text-slate-800 border-b mb-3">Customer</h1>
       <!-- end title  -->
-      <div v-if="total == null || total == ''" class="w-full">
-        Belum ada Order
+      <!-- customerName  -->
+      <div class="w-full flex flex-wrap mb-2">
+        <label for="customerName" class="w-full">Name</label>
+        <input
+          type="text"
+          class="w-full border py-1 px-1"
+          placeholder="Agus Kulehe"
+          id="customerName"
+        />
       </div>
+      <!-- end customerName  -->
+      <!-- cutomerTableNo  -->
+      <div class="w-full flex flex-wrap mb-2">
+        <label for="cutomerTableNo" class="w-full">Table No</label>
+        <input
+          type="number"
+          class="w-full border py-1 px-1"
+          placeholder="20"
+          id="customerTableNo"
+        />
+      </div>
+      <!-- end cutomerTableNo  -->
+      <!-- title  -->
+      <h1 class="text-lg font-bold text-slate-800 border-b mb-3">List Order</h1>
+      <!-- end title  -->
       <!-- order  -->
+      <div v-if="total == null || total == ''" class="w-full">
+        Not item orders
+      </div>
       <div
         v-for="(item, index) in orders"
         class="flex flex-wrap w-full justify-between"
@@ -104,12 +140,33 @@
       <!-- total  -->
       <div
         v-if="total != null && total != ''"
-        class="flex flex-wrap w-full justify-between mt-2 border-t"
+        class="flex flex-wrap w-full justify-between border-t border-b py-2 mt-2"
       >
         <span class="font-semibold">Total</span>
         <span class="font-semibold">Rp. {{ total }}</span>
       </div>
       <!-- end total  -->
+      <!-- btn order  -->
+      <div class="w-full mt-5">
+        <button
+          @click="sendOrder()"
+          class="w-full flex justify-center gap-2 py-2 px-5 bg-emerald-600 rounded-full font-semibold text-white shadow-md hover:scale-105 hover:shadow-lg transition-all active:scale-100 active:bg-emerald-800 active:ring-2 ring-sky-500 ease-in-out mt-3"
+        >
+          Finish Order
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            class="fill-current"
+          >
+            <path
+              d="m21.426 11.095-17-8A.999.999 0 0 0 3.03 4.242L4.969 12 3.03 19.758a.998.998 0 0 0 1.396 1.147l17-8a1 1 0 0 0 0-1.81zM5.481 18.197l.839-3.357L12 12 6.32 9.16l-.839-3.357L18.651 12l-13.17 6.197z"
+            ></path>
+          </svg>
+        </button>
+      </div>
+      <!--end btn order  -->
     </div>
     <!--END COL 2 -->
   </section>
