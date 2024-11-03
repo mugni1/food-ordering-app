@@ -30,8 +30,14 @@
           >
             <div class="h-40 mb-5 w-full overflow-hidden">
               <div
+                v-if="item.image != null"
                 :style="`background-image: url(${url}${item.image});`"
-                class="bg-[url('http://localhost/food-order-api/public/storage/img/${item.image}')] bg-cover bg-center bg-repeat w-full h-full group-hover:rotate-6 group-hover:scale-125 transition-all"
+                class="bg-cover bg-center bg-repeat w-full h-full group-hover:rotate-6 group-hover:scale-125 transition-all"
+              ></div>
+              <div
+                v-else
+                style="background-image: url('src/assets/no_img.png');"
+                class="bg-cover bg-center bg-repeat w-full h-full group-hover:rotate-6 group-hover:scale-125 transition-all"
               ></div>
             </div>
             <h1>{{ item.name }}</h1>

@@ -79,9 +79,15 @@ export default {
     };
   },
   mounted() {
+    this.isAdmin();
     this.showItem(this.$route.params.produkId);
   },
   methods: {
+    isAdmin() {
+      if (this.role_id != 4) {
+        return router.push({ name: "home" });
+      }
+    },
     showItem(produkId) {
       axios({
         method: "get",
