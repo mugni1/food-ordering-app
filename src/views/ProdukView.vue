@@ -63,24 +63,34 @@ export default {
     };
   },
   mounted() {
+    this.getItems();
     if (this.role_id != 4) {
       router.push({ name: "home" });
     }
-
-    this.getItems();
   },
   methods: {
     getItems() {
       axios({
         method: "get",
         url: "http://localhost:8000/api/items",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       })
         .then((response) => {
           this.items = response.data.data;
         })
         .catch(function (error) {
+          let errorstatus = error.response.status;
+          if (errorstatus == 401) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("name");
+            localStorage.removeItem("email");
+            localStorage.removeItem("role_id");
+            localStorage.removeItem("status");
+            router.push({ name: "login" });
+          }
           console.log(error);
-          console.log("Error fetch data");
         });
     },
     drop(id) {
@@ -99,6 +109,15 @@ export default {
             window.location.reload();
           })
           .catch(function (error) {
+            let errorstatus = error.response.status;
+            if (errorstatus == 403) {
+              localStorage.removeItem("token");
+              localStorage.removeItem("name");
+              localStorage.removeItem("email");
+              localStorage.removeItem("role_id");
+              localStorage.removeItem("status");
+              router.push({ name: "login" });
+            }
             console.log(error);
           });
       } else {

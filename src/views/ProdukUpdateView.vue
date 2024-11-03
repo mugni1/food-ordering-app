@@ -101,6 +101,15 @@ export default {
           this.priceProduk = response.data.data.price;
         })
         .catch(function (error) {
+          let errorstatus = error.response.status;
+          if (errorstatus == 401) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("name");
+            localStorage.removeItem("email");
+            localStorage.removeItem("role_id");
+            localStorage.removeItem("status");
+            router.push({ name: "login" });
+          }
           console.log(error);
         });
     },
@@ -134,6 +143,24 @@ export default {
           router.push({ name: "produk" });
         })
         .catch(function (error) {
+          let errorstatus = error.response.status;
+          if (errorstatus == 401) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("name");
+            localStorage.removeItem("email");
+            localStorage.removeItem("role_id");
+            localStorage.removeItem("status");
+            router.push({ name: "login" });
+          }
+          if (errorstatus == 403) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("name");
+            localStorage.removeItem("email");
+            localStorage.removeItem("role_id");
+            localStorage.removeItem("status");
+            router.push({ name: "login" });
+          }
+          console.log(error);
           console.log(error);
         });
     },

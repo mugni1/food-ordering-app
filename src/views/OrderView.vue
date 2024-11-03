@@ -76,6 +76,9 @@ export default {
     };
   },
   mounted() {
+    // get list_items
+    this.getItems();
+
     //jika tidak ada token tendang ke halaman login
     if (
       localStorage.getItem("token") == null ||
@@ -83,9 +86,6 @@ export default {
     ) {
       router.push({ name: "login" });
     }
-
-    // get all items
-    this.getItems();
 
     // middleware
     if (this.role_id != 1 && this.role_id != 4) {
@@ -97,17 +97,25 @@ export default {
       axios({
         method: "get",
         url: "http://localhost:8000/api/items",
-        // headers: {
-        //   Authorization: `Bearer ${localStorage.getItem("token")}`,
-        // },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       })
         .then((response) => {
           console.log(response.data.data);
           this.items = response.data.data;
         })
         .catch(function (error) {
+          let errorstatus = error.response.status;
+          if (errorstatus == 401) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("name");
+            localStorage.removeItem("email");
+            localStorage.removeItem("role_id");
+            localStorage.removeItem("status");
+            router.push({ name: "login" });
+          }
           console.log(error);
-          console.log("Error fetch data");
         });
     },
     searchItem() {
