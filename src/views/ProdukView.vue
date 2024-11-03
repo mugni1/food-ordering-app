@@ -68,12 +68,8 @@ export default {
       axios({
         method: "get",
         url: "http://localhost:8000/api/items",
-        // headers: {
-        //   Authorization: `Bearer ${localStorage.getItem("token")}`,
-        // },
       })
         .then((response) => {
-          console.log(response.data.data);
           this.items = response.data.data;
         })
         .catch(function (error) {
