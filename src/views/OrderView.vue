@@ -42,17 +42,74 @@
             </div>
             <h1>{{ item.name }}</h1>
             <h1>Rp. {{ item.price }}</h1>
+            <button
+              @click="addToOrder(index)"
+              class="py-2 px-5 bg-emerald-600 rounded-full font-semibold text-white shadow-md hover:scale-105 hover:shadow-lg transition-all active:scale-100 active:bg-emerald-800 active:ring-2 ring-sky-500 ease-in-out mt-3"
+            >
+              Order
+            </button>
           </div>
         </div>
         <!-- end card produk  -->
       </div>
       <!-- END LIST PRODUK -->
     </div>
+    <!--END col1 -->
 
-    <!-- col1 -->
+    <!-- COL 2 -->
     <div class="w-full md:w-4/12 border p-5">
-      <h1>List Order</h1>
+      <!-- title  -->
+      <h1 class="text-xl font-bold text-slate-800 border-b mb-3">List Order</h1>
+      <!-- end title  -->
+      <div v-if="total == null" class="w-full">
+        Belum ada Order
+      </div>
+      <!-- order  -->
+      <div
+        v-for="(item, index) in orders"
+        class="flex flex-wrap w-full justify-between"
+      >
+        <div class="leading-tight mb-2">
+          <span>{{ item.name }} (x{{ item.qty }})</span>
+          <br v-if="item.qty > 1" />
+          <span v-if="item.qty > 1" class="text-xs">
+            Rp. {{ item.price }} / 1</span
+          >
+          <br />
+          <div class="flex gap-3">
+            <button
+              class="border px-2 rounded-md text-sm"
+              @click="minesitem(index)"
+            >
+              -
+            </button>
+            <button
+              class="border px-2 rounded-md text-sm"
+              @click="plusItem(index)"
+            >
+              +
+            </button>
+            <button
+              class="border px-2 rounded-md text-sm text-white bg-red-500"
+            >
+              delete
+            </button>
+          </div>
+        </div>
+        <span>Rp. {{ item.pricechart }}</span>
+      </div>
+      <!-- end order  -->
+      <!-- total  -->
+      <div
+        v-if="total != null"
+        class="flex flex-wrap w-full justify-between mt-2 border-t"
+      >
+        <span class="font-semibold">Total</span>
+        <span class="font-semibold">Rp. {{ total }}</span>
+      </div>
+      <!-- end total  -->
     </div>
+    <!--END COL 2 -->
   </section>
 </template>
 
@@ -73,6 +130,8 @@ export default {
       filterItem: [],
       keyword: "",
       url: "http://localhost/food-order-api/public/storage/img/",
+      orders: [],
+      total: null,
     };
   },
   mounted() {
@@ -117,6 +176,31 @@ export default {
     searchItem() {
       this.filterItem = this.items.filter((item) =>
         item.name.toLowerCase().includes(this.keyword.toLowerCase())
+      );
+    },
+    addToOrder(index) {
+      //cari produk dengan index yg sudah di tentukan
+      let produk = this.filterItem[index];
+
+      //jika ada produk yang sama di this.orders maka qty++ | produk nya tidak nambah
+      let findProduk = this.orders.find((item) => item.id == produk.id);
+
+      //jika produk ada alias tidak null
+      if (findProduk != null) {
+        findProduk.qty++;
+        findProduk.pricechart = findProduk.price * findProduk.qty;
+        // findProduk["price"] = findProduk.price * findProduk.qty;
+      }
+      // jika produk tidak ada alias null maka push dulu ini
+      else {
+        produk["qty"] = 1;
+        produk["pricechart"] = produk.price;
+        this.orders.push(produk);
+      }
+
+      this.total = this.orders.reduce(
+        (acc, item) => acc + item.price * item.qty,
+        0
       );
     },
   },
