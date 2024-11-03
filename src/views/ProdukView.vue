@@ -20,7 +20,13 @@
         <td class="border text-center">{{ index + 1 }}</td>
         <td class="border text-center flex justify-center py-3">
           <div
+            v-if="item.image != null"
             :style="{ backgroundImage: `url(${url}${item.image})` }"
+            class="bg-cover bg-center bg-repeat h-20 w-36"
+          ></div>
+          <div
+            v-else
+            style="background-image: url('src/assets/no_img.png');"
             class="bg-cover bg-center bg-repeat h-20 w-36"
           ></div>
         </td>
