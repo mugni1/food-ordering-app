@@ -80,6 +80,7 @@
           class="w-full border py-1 px-1"
           placeholder="Agus Kulehe"
           id="customerName"
+          v-model="customerName"
         />
       </div>
       <!-- end customerName  -->
@@ -91,6 +92,7 @@
           class="w-full border py-1 px-1"
           placeholder="20"
           id="customerTableNo"
+          v-model="customerTableNo"
         />
       </div>
       <!-- end cutomerTableNo  -->
@@ -189,6 +191,8 @@ export default {
       filterItem: [],
       keyword: "",
       url: "http://localhost/food-order-api/public/storage/img/",
+      customerName: null,
+      customerTableNo: null,
       orders: [],
       total: null,
     };
@@ -286,6 +290,46 @@ export default {
         (acc, item) => acc + item.price * item.qty,
         0
       );
+    },
+    sendOrder() {
+      if (this.customerName == null || this.customerName == "") {
+        return alert("Customer name cannot null");
+      }
+      if (this.customerTableNo == null || this.customerTableNo == "") {
+        return alert("Customer table no cannot null");
+      }
+      if (this.orders == [] || this.orders == null || this.orders == "") {
+        return alert("Please select one produc for order");
+      }
+      //items
+      let orderItems = this.orders.map((item) => [item.id, item.qty]);
+      axios({
+        method: "post",
+        url: "http://localhost:8000/api/create_order",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        data: {
+          customer_name: this.customerName,
+          table_no: this.customerTableNo,
+          items: orderItems,
+        },
+      })
+        .then((response) => {
+          console.log(response.status);
+          if (response.status == 200) {
+            alert("Success create order, Please wait for your food");
+            location.reload();
+          }
+        })
+        .catch(function (error) {
+          let errorstatus = error.response.status;
+          if (errorstatus == 401) {
+            localStorage.clear();
+            router.push({ name: "login" });
+          }
+          console.log(error);
+        });
     },
   },
 };
