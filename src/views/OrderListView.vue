@@ -25,7 +25,7 @@
         <th class="border bg-slate-400">Time</th>
         <th class="border bg-slate-400">Status</th>
         <th class="border bg-slate-400">Total</th>
-        <th class="border bg-slate-400" colspan="2">Interksi</th>
+        <th class="border bg-slate-400" colspan="2">Acrion</th>
       </tr>
       <tr v-for="(item, index) in orders" :key="index">
         <td class="border text-center bg-slate-300">{{ index + 1 }}</td>
@@ -50,8 +50,14 @@
           >
         </td>
         <td class="border text-center">Rp. {{ item.total }}</td>
-        <td v-if="role_id == 4" class="border text-center">Delete</td>
-        <td class="border text-center">Detail</td>
+        <!-- <td v-if="role_id == 4" class="border text-center">Delete</td> -->
+        <td class="border text-center">
+          <router-link :to="`/order/${item.id}/detail`"
+            ><span class="px-5 py-1 rounded-lg bg-slate-300 hover:bg-slate-600"
+              >Detail</span
+            ></router-link
+          >
+        </td>
       </tr>
     </table>
   </section>

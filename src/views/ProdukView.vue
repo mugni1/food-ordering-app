@@ -24,12 +24,12 @@
     <!-- end loading indicator -->
     <!-- list produk -->
     <table v-else class="w-full md:w-8/12 mx-auto mt-5">
-      <tr>
-        <th class="border bg-slate-400">No</th>
-        <th class="border bg-slate-400">Gambar</th>
-        <th class="border bg-slate-400">Name</th>
-        <th class="border bg-slate-400">Price</th>
-        <th class="border bg-slate-400" colspan="2">Action</th>
+      <tr class="w-full">
+        <th class="border bg-slate-400 w-1/12 py-4">No</th>
+        <th class="border bg-slate-400 w-3/12">Gambar</th>
+        <th class="border bg-slate-400 w-4/12">Name</th>
+        <th class="border bg-slate-400 w-2/12">Price</th>
+        <th class="border bg-slate-400 w-2/12" colspan="2">Action</th>
       </tr>
       <tr v-for="(item, index) in items" class="w-full">
         <td class="border text-center">{{ index + 1 }}</td>
@@ -49,11 +49,11 @@
           {{ item.name }}
         </td>
         <td class="border text-center">Rp.{{ item.price }}</td>
-        <td class="border text-center">
+        <td class="border text-center w-1/12">
           <router-link :to="'/produk/' + item.id + '/update'">Edit</router-link>
         </td>
-        <td class="border text-center">
-          <button @click="drop(item.id)">delte</button>
+        <td class="border text-center w-1/12">
+          <button @click="drop(item.id)">delete</button>
         </td>
       </tr>
     </table>

@@ -19,7 +19,7 @@
       </div>
       <!-- end SEARCH  -->
       <!-- Menampilkan Loading Indicator -->
-      <div v-if="isLoading" class="flex justify-center items-center w-full">
+      <div v-if="isLoading" class="flex justify-center items-start w-full">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -81,7 +81,7 @@
     <!--END col1 -->
 
     <!-- COL 2 -->
-    <div class="w-full md:w-4/12 border p-5">
+    <div class="w-full md:w-4/12 p-5">
       <!-- title  -->
       <h1 class="text-lg font-bold text-slate-800 border-b mb-3">Customer</h1>
       <!-- end title  -->
