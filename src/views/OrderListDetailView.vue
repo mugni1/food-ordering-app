@@ -51,8 +51,7 @@
           Time : 17:25:10
         </div>
       </div>
-      <div class="w-full flex flex-wrap border-b pb-2">
-        <h1 class="font-semibold w-full">Order Detail</h1>
+      <div class="w-full flex flex-wrap pb-2 mb-4">
         <table class="w-full">
           <tr class="w-full">
             <th class="border w-3/12 py-2">Name</th>
@@ -70,12 +69,60 @@
             <td class="border text-center py-5 font-bold w-9/12" colspan="3">
               Total All Price
             </td>
-            <td class="border text-center w-3/12">
+            <td class="border text-center w-3/12 font-bold">
               Rp. {{ orderDetails.total }}
             </td>
           </tr>
         </table>
       </div>
+      <!-- action -->
+      <div class="w-full flex flex-wrap gap-5">
+        <button
+          v-if="orderDetails.status == 'ordered' && role_id == 2"
+          class="bg-yellow-600 py-1 px-5 font-bold text-white rounded-lg shadow-md hover:bg-slate-600"
+          @click="setAsDone($route.params.orderId)"
+          :disabled="proccesing"
+        >
+          <span v-if="!proccesing">Done</span>
+          <div v-else class="w-full flex justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              class="animate-spin w-5 h-5 fill-current"
+            >
+              <path
+                d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
+              ></path>
+            </svg>
+          </div>
+        </button>
+        <button
+          v-if="role_id == 3 || (role_id == 4 && orderDetails.status == 'done')"
+          class="bg-green-600 py-1 px-5 font-bold text-white rounded-lg shadow-md hover:bg-slate-600"
+          @click="setAsPaid($route.params.orderId)"
+          :disabled="proccesing"
+        >
+          <span v-if="!proccesing">Paid</span>
+          <div v-else class="w-full flex justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              class="animate-spin w-5 h-5 fill-current"
+            >
+              <path
+                d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
+              ></path>
+            </svg>
+          </div>
+        </button>
+        <button
+          v-if="role_id == 4"
+          class="bg-red-600 py-1 px-5 font-bold text-white rounded-lg shadow-md hover:bg-slate-600"
+        >
+          Delete
+        </button>
+      </div>
+      <!--end action -->
     </div>
     <!-- detail  -->
   </section>
@@ -94,6 +141,7 @@ export default {
       name: localStorage.getItem("name"),
       role_id: localStorage.getItem("role_id"),
       isLoading: true,
+      proccesing: false,
       orderDetails: [],
     };
   },
@@ -115,7 +163,6 @@ export default {
         },
       })
         .then((response) => {
-          console.log(response.data.data);
           this.orderDetails = response.data.data;
         })
         .catch((error) => {
@@ -128,6 +175,54 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+        });
+    },
+    setAsDone(orderId) {
+      this.proccesing = true;
+      axios({
+        method: "get",
+        url: `http://localhost:8000/api/order/${orderId}/set_done`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((response) => {
+          alert("Order ready to consume for customer");
+          router.push({ name: "orderList" });
+        })
+        .catch((error) => {
+          let errorstatus = error.response.status;
+          if (errorstatus == 403) {
+            localStorage.clear();
+            router.push({ name: "login" });
+          }
+        })
+        .finally(() => {
+          this.proccesing = false;
+        });
+    },
+    setAsPaid(orderId) {
+      this.proccesing = true;
+      axios({
+        method: "get",
+        url: `http://localhost:8000/api/order/${orderId}/set_paid`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((response) => {
+          alert("User success payment");
+          router.push({ name: "orderList" });
+        })
+        .catch((error) => {
+          let errorstatus = error.response.status;
+          if (errorstatus == 403) {
+            localStorage.clear();
+            router.push({ name: "login" });
+          }
+        })
+        .finally(() => {
+          this.proccesing = false;
         });
     },
   },

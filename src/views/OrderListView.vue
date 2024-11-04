@@ -17,49 +17,123 @@
       </svg>
     </div>
     <!-- end loading indicator -->
-    <table v-else class="w-10/12 mx-auto mt-5">
-      <tr>
-        <th class="border bg-slate-400 py-4">No</th>
-        <th class="border bg-slate-400">Name</th>
-        <th class="border bg-slate-400">Table No</th>
-        <th class="border bg-slate-400">Time</th>
-        <th class="border bg-slate-400">Status</th>
-        <th class="border bg-slate-400">Total</th>
-        <th class="border bg-slate-400" colspan="2">Acrion</th>
-      </tr>
-      <tr v-for="(item, index) in orders" :key="index">
-        <td class="border text-center bg-slate-300">{{ index + 1 }}</td>
-        <td class="border px-2">{{ item.customer_name }}</td>
-        <td class="border px-2 text-center">{{ item.table_no }}</td>
-        <td class="border text-center">{{ item.order_time }}</td>
-        <td class="border text-center py-4">
-          <span
-            class="py-1 px-4 rounded-lg bg-red-600 text-white font-semibold"
-            v-if="item.status == 'ordered'"
-            >{{ item.status }}</span
-          >
-          <span
-            class="py-1 px-4 rounded-lg bg-yellow-600 text-white font-semibold"
-            v-if="item.status == 'done'"
-            >{{ item.status }}</span
-          >
-          <span
-            class="py-1 px-4 rounded-lg bg-green-600 text-white font-semibold"
-            v-if="item.status == 'paid'"
-            >{{ item.status }}</span
-          >
-        </td>
-        <td class="border text-center">Rp. {{ item.total }}</td>
-        <!-- <td v-if="role_id == 4" class="border text-center">Delete</td> -->
-        <td class="border text-center">
-          <router-link :to="`/order/${item.id}/detail`"
-            ><span class="px-5 py-1 rounded-lg bg-slate-300 hover:bg-slate-600"
-              >Detail</span
-            ></router-link
-          >
-        </td>
-      </tr>
-    </table>
+
+    <div v-else class="w-full mt-5">
+      <div class="w-10/12 mx-auto flex justify-center gap-10">
+        <button
+          class="bg-slate-400 py-1 px-5 font-bold text-white rounded-lg shadow-md hover:bg-slate-600"
+          @click="defaultt()"
+        >
+          Default
+        </button>
+        <button
+          class="bg-red-600 py-1 px-5 font-bold text-white rounded-lg shadow-md hover:bg-slate-600"
+          @click="ordered()"
+        >
+          Ordered
+        </button>
+        <button
+          class="bg-yellow-600 py-1 px-5 font-bold text-white rounded-lg shadow-md hover:bg-slate-600"
+          @click="done()"
+        >
+          Done
+        </button>
+        <button
+          class="bg-green-600 py-1 px-5 font-bold text-white rounded-lg shadow-md hover:bg-slate-600"
+          @click="paid()"
+        >
+          Paid
+        </button>
+      </div>
+      <table v-if="showOrders" class="w-10/12 mx-auto mt-5">
+        <tr>
+          <th class="border bg-slate-400 py-4">No</th>
+          <th class="border bg-slate-400">Name</th>
+          <th class="border bg-slate-400">Table No</th>
+          <th class="border bg-slate-400">Time</th>
+          <th class="border bg-slate-400">Status</th>
+          <th class="border bg-slate-400">Total</th>
+          <th class="border bg-slate-400" colspan="2">Acrion</th>
+        </tr>
+        <tr v-for="(item, index) in orders" :key="index">
+          <td class="border text-center bg-slate-300">{{ index + 1 }}</td>
+          <td class="border px-2">{{ item.customer_name }}</td>
+          <td class="border px-2 text-center">{{ item.table_no }}</td>
+          <td class="border text-center">{{ item.order_time }}</td>
+          <td class="border text-center py-4">
+            <span
+              class="py-1 px-4 rounded-lg bg-red-600 text-white font-semibold"
+              v-if="item.status == 'ordered'"
+              >{{ item.status }}</span
+            >
+            <span
+              class="py-1 px-4 rounded-lg bg-yellow-600 text-white font-semibold"
+              v-if="item.status == 'done'"
+              >{{ item.status }}</span
+            >
+            <span
+              class="py-1 px-4 rounded-lg bg-green-600 text-white font-semibold"
+              v-if="item.status == 'paid'"
+              >{{ item.status }}</span
+            >
+          </td>
+          <td class="border text-center">Rp. {{ item.total }}</td>
+          <!-- <td v-if="role_id == 4" class="border text-center">Delete</td> -->
+          <td class="border text-center">
+            <router-link :to="`/order/${item.id}/detail`"
+              ><span
+                class="px-5 py-1 rounded-lg bg-slate-300 hover:bg-slate-600"
+                >Detail</span
+              ></router-link
+            >
+          </td>
+        </tr>
+      </table>
+      <table v-if="!showOrders" class="w-10/12 mx-auto mt-5">
+        <tr>
+          <th class="border bg-slate-400 py-4">No</th>
+          <th class="border bg-slate-400">Name</th>
+          <th class="border bg-slate-400">Table No</th>
+          <th class="border bg-slate-400">Time</th>
+          <th class="border bg-slate-400">Status</th>
+          <th class="border bg-slate-400">Total</th>
+          <th class="border bg-slate-400" colspan="2">Acrion</th>
+        </tr>
+        <tr v-for="(item, index) in ordersFilter">
+          <td class="border text-center bg-slate-300">{{ index + 1 }}</td>
+          <td class="border px-2">{{ item.customer_name }}</td>
+          <td class="border px-2 text-center">{{ item.table_no }}</td>
+          <td class="border text-center">{{ item.order_time }}</td>
+          <td class="border text-center py-4">
+            <span
+              class="py-1 px-4 rounded-lg bg-red-600 text-white font-semibold"
+              v-if="item.status == 'ordered'"
+              >{{ item.status }}</span
+            >
+            <span
+              class="py-1 px-4 rounded-lg bg-yellow-600 text-white font-semibold"
+              v-if="item.status == 'done'"
+              >{{ item.status }}</span
+            >
+            <span
+              class="py-1 px-4 rounded-lg bg-green-600 text-white font-semibold"
+              v-if="item.status == 'paid'"
+              >{{ item.status }}</span
+            >
+          </td>
+          <td class="border text-center">Rp. {{ item.total }}</td>
+          <!-- <td v-if="role_id == 4" class="border text-center">Delete</td> -->
+          <td class="border text-center">
+            <router-link :to="`/order/${item.id}/detail`"
+              ><span
+                class="px-5 py-1 rounded-lg bg-slate-300 hover:bg-slate-600"
+                >Detail</span
+              ></router-link
+            >
+          </td>
+        </tr>
+      </table>
+    </div>
   </section>
   <!-- Content -->
 </template>
@@ -78,7 +152,9 @@ export default {
       name: localStorage.getItem("name"),
       role_id: localStorage.getItem("role_id"),
       isLoading: true,
+      showOrders: true,
       orders: [],
+      ordersFilter: [],
     };
   },
   mounted() {
@@ -99,7 +175,6 @@ export default {
         },
       })
         .then((response) => {
-          console.log(response.data.data);
           this.orders = response.data.data;
         })
         .catch((error) => {
@@ -113,6 +188,23 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
+    },
+    defaultt() {
+      this.showOrders = true;
+    },
+    ordered() {
+      this.ordersFilter = this.orders.filter(
+        (item) => item.status == "ordered"
+      );
+      this.showOrders = false;
+    },
+    done() {
+      this.ordersFilter = this.orders.filter((item) => item.status == "done");
+      this.showOrders = false;
+    },
+    paid() {
+      this.ordersFilter = this.orders.filter((item) => item.status == "paid");
+      this.showOrders = false;
     },
   },
 };
