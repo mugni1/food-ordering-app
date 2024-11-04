@@ -3,12 +3,27 @@
   <section class="py-20 p-5 flex flex-wrap w-full">
     <div class="w-full md:w-8/12 mx-auto mt-5">
       <button
+        v-if="isLoading == false"
         class="py-2 px-5 bg-emerald-600 rounded-full font-semibold text-white shadow-md hover:scale-105 hover:shadow-lg transition-all active:scale-100 active:bg-emerald-800 active:ring-2 ring-sky-500 ease-in-out"
       >
         <router-link to="/produk-add">Add New Produk</router-link>
       </button>
     </div>
-    <table class="w-full md:w-8/12 mx-auto mt-5">
+    <!-- Menampilkan Loading Indicator -->
+    <div v-if="isLoading" class="flex justify-center items-center w-full">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        class="animate-spin w-32 h-32 fill-slate-400"
+      >
+        <path
+          d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
+        ></path>
+      </svg>
+    </div>
+    <!-- end loading indicator -->
+    <!-- list produk -->
+    <table v-else class="w-full md:w-8/12 mx-auto mt-5">
       <tr>
         <th class="border bg-slate-400">No</th>
         <th class="border bg-slate-400">Gambar</th>
@@ -42,6 +57,7 @@
         </td>
       </tr>
     </table>
+    <!-- end list produk  -->
   </section>
 </template>
 
@@ -56,6 +72,7 @@ export default {
   },
   data() {
     return {
+      isLoading: true,
       name: localStorage.getItem("name"),
       role_id: localStorage.getItem("role_id"),
       items: [],
@@ -87,6 +104,9 @@ export default {
             router.push({ name: "login" });
           }
           console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
     drop(id) {

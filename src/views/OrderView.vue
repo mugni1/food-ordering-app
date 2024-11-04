@@ -18,8 +18,21 @@
         />
       </div>
       <!-- end SEARCH  -->
+      <!-- Menampilkan Loading Indicator -->
+      <div v-if="isLoading" class="flex justify-center items-center w-full">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          class="animate-spin w-20 h-20 fill-slate-400"
+        >
+          <path
+            d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
+          ></path>
+        </svg>
+      </div>
+      <!-- end loading indicator -->
       <!-- LIST PRODUK -->
-      <div class="w-full flex flex-wrap justify-start items-start">
+      <div v-else class="w-full flex flex-wrap justify-start items-start">
         <!-- card produk -->
         <div
           v-for="(item, index) in filterItem"
@@ -153,19 +166,33 @@
         <button
           @click="sendOrder()"
           class="w-full flex justify-center gap-2 py-2 px-5 bg-emerald-600 rounded-full font-semibold text-white shadow-md hover:scale-105 hover:shadow-lg transition-all active:scale-100 active:bg-emerald-800 active:ring-2 ring-sky-500 ease-in-out mt-3"
+          :disabled="processing"
         >
-          Finish Order
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            class="fill-current"
-          >
-            <path
-              d="m21.426 11.095-17-8A.999.999 0 0 0 3.03 4.242L4.969 12 3.03 19.758a.998.998 0 0 0 1.396 1.147l17-8a1 1 0 0 0 0-1.81zM5.481 18.197l.839-3.357L12 12 6.32 9.16l-.839-3.357L18.651 12l-13.17 6.197z"
-            ></path>
-          </svg>
+          <div v-if="!processing" class="w-full flex justify-center">
+            Finish Order
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              class="fill-current font-bold"
+            >
+              <path
+                d="m21.426 11.095-17-8A.999.999 0 0 0 3.03 4.242L4.969 12 3.03 19.758a.998.998 0 0 0 1.396 1.147l17-8a1 1 0 0 0 0-1.81zM5.481 18.197l.839-3.357L12 12 6.32 9.16l-.839-3.357L18.651 12l-13.17 6.197z"
+              ></path>
+            </svg>
+          </div>
+          <div v-else class="w-full flex justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              class="animate-spin w-5 h-5 fill-current"
+            >
+              <path
+                d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
+              ></path>
+            </svg>
+          </div>
         </button>
       </div>
       <!--end btn order  -->
@@ -185,6 +212,8 @@ export default {
   },
   data() {
     return {
+      processing: false,
+      isLoading: true,
       name: localStorage.getItem("name"),
       role_id: localStorage.getItem("role_id"),
       items: [],
@@ -234,6 +263,9 @@ export default {
             router.push({ name: "login" });
           }
           console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
     searchItem() {
@@ -301,6 +333,7 @@ export default {
       if (this.orders == [] || this.orders == null || this.orders == "") {
         return alert("Please select one produc for order");
       }
+      this.processing = true;
       //items
       let orderItems = this.orders.map((item) => [item.id, item.qty]);
       axios({
@@ -319,7 +352,6 @@ export default {
           console.log(response.status);
           if (response.status == 200) {
             alert("Success create order, Please wait for your food");
-            location.reload();
           }
         })
         .catch(function (error) {
@@ -329,6 +361,9 @@ export default {
             router.push({ name: "login" });
           }
           console.log(error);
+        })
+        .finally(() => {
+          this.processing = false;
         });
     },
   },
