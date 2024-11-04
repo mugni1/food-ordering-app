@@ -118,8 +118,21 @@
         <button
           v-if="role_id == 4"
           class="bg-red-600 py-1 px-5 font-bold text-white rounded-lg shadow-md hover:bg-slate-600"
+          @click="drop($route.params.orderId)"
+          :disabled="proccesingDelete"
         >
-          Delete
+          <span v-if="!proccesingDelete">Delete</span>
+          <div v-else class="w-full flex justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              class="animate-spin w-5 h-5 fill-current"
+            >
+              <path
+                d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
+              ></path>
+            </svg>
+          </div>
         </button>
       </div>
       <!--end action -->
@@ -142,6 +155,7 @@ export default {
       role_id: localStorage.getItem("role_id"),
       isLoading: true,
       proccesing: false,
+      proccesingDelete: false,
       orderDetails: [],
     };
   },
@@ -223,6 +237,30 @@ export default {
         })
         .finally(() => {
           this.proccesing = false;
+        });
+    },
+    drop(orderId) {
+      this.proccesingDelete = true;
+      axios({
+        method: "delete",
+        url: `http://localhost:8000/api/order/${orderId}/delete`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((response) => {
+          alert("Deleted Successfully");
+          router.push({ name: "orderList" });
+        })
+        .catch((error) => {
+          let errorstatus = error.response.status;
+          if (errorstatus == 403) {
+            localStorage.clear();
+            router.push({ name: "login" });
+          }
+        })
+        .finally(() => {
+          this.proccesingDelete = false;
         });
     },
   },
