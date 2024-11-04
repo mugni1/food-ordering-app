@@ -352,6 +352,14 @@ export default {
           console.log(response.status);
           if (response.status == 200) {
             alert("Success create order, Please wait for your food");
+            // set order to array null
+            this.orders = [];
+            // set total to null
+            this.total = null;
+            // set customer name to null
+            this.customerName = null;
+            // set customer table no to null
+            this.customerTableNo = null;
           }
         })
         .catch(function (error) {
