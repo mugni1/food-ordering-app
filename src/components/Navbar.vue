@@ -31,6 +31,12 @@
         >Order List</router-link
       >
       <router-link
+        to="/order-report"
+        class="py-2 px-5 rounded-lg hover:bg-emerald-700 active:ring-2 ring-blue-600 active:bg-sky-500 active:text-slate-700"
+        v-if="role_id == 4"
+        >Order Report</router-link
+      >
+      <router-link
         to="/produk"
         class="py-2 px-5 rounded-lg hover:bg-emerald-700 active:ring-2 ring-blue-600 active:bg-sky-500 active:text-slate-700"
         v-if="role_id == 4"

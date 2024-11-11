@@ -8,6 +8,7 @@ import ProdukUpdateView from "@/views/ProdukUpdateView.vue";
 import ProdukAddView from "@/views/ProdukAddView.vue";
 import OrderListView from "@/views/OrderListView.vue";
 import OrderListDetailView from "@/views/OrderListDetailView.vue";
+import OrderReportView from "@/views/OrderReportView.vue";
 
 const routes = [
   { path: "/", name: "home", component: HomeView },
@@ -27,6 +28,7 @@ const routes = [
     name: "orderDetail",
     component: OrderListDetailView,
   },
+  { path: "/order-report", name: "orderReport", component: OrderReportView },
 ];
 
 const router = createRouter({

@@ -202,6 +202,7 @@
 </template>
 
 <script>
+import swal from "sweetalert";
 import Navbar from "@/components/Navbar.vue";
 import router from "@/router";
 import axios from "axios";
@@ -325,13 +326,17 @@ export default {
     },
     sendOrder() {
       if (this.customerName == null || this.customerName == "") {
-        return alert("Customer name cannot null");
+        return swal({
+          title: "Warning!",
+          text: "Customer name cannot null",
+          icon: "warning",
+        });
       }
       if (this.customerTableNo == null || this.customerTableNo == "") {
-        return alert("Customer table no cannot null");
+        return swal("Warning", "Customer table no cannot null", "warning");
       }
       if (this.orders == [] || this.orders == null || this.orders == "") {
-        return alert("Please select one produc for order");
+        return swal("Warning", "Please select one produc for order", "warning");
       }
       this.processing = true;
       //items

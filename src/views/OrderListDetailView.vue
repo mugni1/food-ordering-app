@@ -144,6 +144,7 @@
 import Navbar from "@/components/Navbar.vue";
 import router from "@/router";
 import axios from "axios";
+import swal from "sweetalert";
 
 export default {
   components: {
@@ -241,22 +242,46 @@ export default {
     },
     drop(orderId) {
       this.proccesingDelete = true;
-      axios({
-        method: "delete",
-        url: `http://localhost:8000/api/order/${orderId}/delete`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+      swal({
+        icon: "warning",
+        title: "Warning",
+        text: "Apakah Kamu yakin akan menghapus",
+        buttons: true,
       })
-        .then((response) => {
-          alert("Deleted Successfully");
-          router.push({ name: "orderList" });
-        })
-        .catch((error) => {
-          let errorstatus = error.response.status;
-          if (errorstatus == 403) {
-            localStorage.clear();
-            router.push({ name: "login" });
+        .then((isDelete) => {
+          if (isDelete) {
+            axios({
+              method: "delete",
+              url: `http://localhost:8000/api/order/${orderId}/delete`,
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            })
+              .then((response) => {
+                swal({
+                  title: "Success",
+                  text: "Order Berhasil di hapus",
+                  icon: "success",
+                });
+                router.push({ name: "orderList" });
+              })
+              .catch((error) => {
+                let errorstatus = error.response.status;
+                if (errorstatus == 403) {
+                  swal({
+                    title: "Error",
+                    text: "You Cannot acces this page",
+                    icon: "error",
+                  });
+                  localStorage.clear();
+                  router.push({ name: "login" });
+                }
+              });
+          } else {
+            swal({
+              title: "Cancel Delete",
+              text: "Penghapusan di batalkan",
+            });
           }
         })
         .finally(() => {
