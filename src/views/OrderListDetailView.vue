@@ -247,6 +247,7 @@ export default {
         title: "Warning",
         text: "Apakah Kamu yakin akan menghapus",
         buttons: true,
+        dangerMode: true,
       })
         .then((isDelete) => {
           if (isDelete) {
@@ -262,8 +263,9 @@ export default {
                   title: "Success",
                   text: "Order Berhasil di hapus",
                   icon: "success",
+                }).then((result) => {
+                  router.push({ name: "orderList" });
                 });
-                router.push({ name: "orderList" });
               })
               .catch((error) => {
                 let errorstatus = error.response.status;
