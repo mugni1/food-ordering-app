@@ -4,8 +4,32 @@
   <!-- END NAVBAR -->
 
   <!-- CONTENT -->
-  <section class="pt-20">
-    <h1>Home</h1>
+  <section class="flex flex-wrap min-h-screen px-5">
+    <div class="w-full md:w-1/2 h-1/2 md:h-screen flex flex-wrap items-center">
+      <div class="w-full flex flex-wrap">
+        <h1
+          class="font-bold text-5xl bg-gradient-to-br from-emerald-500 to-sky-600 bg-clip-text text-transparent text-shadow w-full"
+        >
+          FOOD
+        </h1>
+        <h1 class="font-bold text-5xl text-slate-800 text-shadow w-full">
+          ORDERING APP
+        </h1>
+        <h3 class="font-semibold text-2xl text-slate-700 w-full mt-3">
+          Application to manage orders and food, in your restaurant
+        </h3>
+        <div class="py-5 flex gap-5">
+          <button
+            class="px-5 py-2 rounded-full border border-green-800 bg-emerald-500 text-white font-semibold"
+          >
+            Get Started
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="w-full md:w-1/2 h-full md:h-1/2">
+      <h1>Today</h1>
+    </div>
   </section>
   <!-- END CONTENT  -->
 </template>

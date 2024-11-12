@@ -64,16 +64,16 @@
     <!-- list order  -->
     <table class="w-10/12 mx-auto mt-5 mb-10">
       <tr>
-        <th class="border bg-slate-400 py-4">No</th>
-        <th class="border bg-slate-400">Name</th>
-        <th class="border bg-slate-400">Table No</th>
-        <th class="border bg-slate-400">Date</th>
-        <th class="border bg-slate-400">Time</th>
-        <th class="border bg-slate-400">Status</th>
-        <th class="border bg-slate-400">Total</th>
+        <th class="border bg-slate-300 py-4">No</th>
+        <th class="border bg-slate-300">Name</th>
+        <th class="border bg-slate-300">Table No</th>
+        <th class="border bg-slate-300">Date</th>
+        <th class="border bg-slate-300">Time</th>your
+        <th class="border bg-slate-300">Status</th>
+        <th class="border bg-slate-300">Total</th>
       </tr>
       <tr v-if="listOrder == null || listOrder.orderCount == 0">
-        <th class="py-5 bg-red-500" colspan="8">
+        <th class="py-5 bg-red-100" colspan="8">
           No Data
         </th>
       </tr>

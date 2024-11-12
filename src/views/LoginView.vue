@@ -74,10 +74,24 @@
       <!-- BTN SUBMIT  -->
       <div class="mb-2">
         <button
-          class="w-full py-1 px-5 bg-emerald-600 rounded-full text-white hover:text-slate-400 shadow-md hover:bg-emerald-800 active:ring-2 ring-green-400"
+          :disabled="isLoading"
+          class="w-full flex justify-center py-1 px-5 bg-emerald-600 rounded-full text-white hover:text-slate-400 shadow-md hover:bg-emerald-800 active:ring-2 ring-green-400"
           @click="login()"
         >
-          SUBMIT
+          <!-- Menampilkan Loading Indicator -->
+          <div v-if="isLoading" class="">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              class="animate-spin h-6 w-6 fill-slate-400"
+            >
+              <path
+                d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
+              ></path>
+            </svg>
+          </div>
+          <!-- end loading indicator -->
+          <span v-else> SUBMIT</span>
         </button>
       </div>
       <!-- END BTN SUBMIT  -->
@@ -93,6 +107,7 @@ import router from "@/router";
 export default {
   data() {
     return {
+      isLoading: false,
       email: null,
       password: null,
       notShowPassword: true,
@@ -102,6 +117,7 @@ export default {
   },
   methods: {
     login() {
+      this.isLoading = true;
       axios({
         method: "post",
         url: "http://localhost:8000/api/login/auth",
@@ -111,7 +127,6 @@ export default {
         },
       })
         .then(function (response) {
-          console.log(response);
           localStorage.setItem("email", response.data.data.email);
           localStorage.setItem("name", response.data.data.name);
           localStorage.setItem("role_id", response.data.data.role_id);
@@ -120,8 +135,22 @@ export default {
           router.push({ name: "home" });
         })
         .catch(function (error) {
-          console.log(error);
-          console.log("Erorr email or password");
+          if (error.status == 422) {
+            swal({
+              icon: "error",
+              title: "Error Login",
+              text: "Kata Sandi Atau Password salah",
+            });
+          } else {
+            swal({
+              icon: "error",
+              title: "Error Server",
+              text: "Server sedang mengalami masalah, Coba lagi nanti",
+            });
+          }
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
     showpw() {
